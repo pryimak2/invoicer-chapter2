@@ -19,6 +19,4 @@ jobs:
     - name: Test
       run: 
         go mod init github.com/Securing-DevOps/invoicer-chapter2;
-        go mod tidy
-        go mod vendor
         go test github.com/Securing-DevOps/invoicer-chapter2
