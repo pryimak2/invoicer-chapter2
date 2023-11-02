@@ -8,7 +8,7 @@ ADD statics /app/statics/
 
 COPY bin/invoicer /app/invoicer
 USER app
-RUN chmod +x /app/invoicer
+
 EXPOSE 8080
 WORKDIR /app
 ENTRYPOINT /app/invoicer
