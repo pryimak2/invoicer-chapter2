@@ -64,22 +64,11 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
       
-    - name: Setup environment
-      run: |
-        gb="/src/github.com/${GITHUB_REPOSITORY%/*}";
-        if [ "${GITHUB_REPOSITORY%/*}" == 'Securing-DevOps' ]; then
-          dr="securingdevops"
-        else
-          dr=$DOCKER_USER
-        fi
-        echo "export GOPATH_HEAD=\"gohead" >> $GITHUB_ENV
-        echo "export GOPATH_BASE=\"gobase" >> $GITHUB_ENV
-        echo "export DOCKER_REPO=\"$dr\"" >> $GITHUB_ENV
     - name: Create necessary directories
       run: |
-        mkdir -p "${GOPATH_BASE}"
-        mkdir -p "${GOPATH_HEAD}/bin"
-        
+        mkdir -p "gobase"
+        mkdir bin/invoicer
+
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
