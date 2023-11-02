@@ -73,7 +73,6 @@ jobs:
         # Set the environment variables
         export GOPATH_HEAD="$(echo ${GOPATH} | cut -d ':' -f 1)"
         export GOPATH_BASE="${GOPATH_HEAD}${gb}"
-        export DOCKER_REPO="$dr"
     
         # Create directories
         mkdir -p "${GOPATH_BASE}"
