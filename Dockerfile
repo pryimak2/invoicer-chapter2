@@ -3,7 +3,7 @@ FROM golang:latest
 RUN mkdir /app/
 RUN mkdir /app/statics/
 ADD statics /app/statics/
-RUN chmod -r /app/ 777
+RUN chmod 777 /app/ 
 
 COPY bin/invoicer /app/invoicer
 
