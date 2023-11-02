@@ -72,8 +72,8 @@ jobs:
         else
           dr=$DOCKER_USER
         fi
-        echo "export GOPATH_HEAD=\"$(echo ${GOPATH} | cut -d ':' -f 1)\"" >> $GITHUB_ENV
-        echo "export GOPATH_BASE=\"$(echo ${GOPATH} | cut -d ':' -f 1)${gb}\"" >> $GITHUB_ENV
+        echo "export GOPATH_HEAD=\"gohead" >> $GITHUB_ENV
+        echo "export GOPATH_BASE=\"gobase" >> $GITHUB_ENV
         echo "export DOCKER_REPO=\"$dr\"" >> $GITHUB_ENV
     - name: Create necessary directories
       run: |
