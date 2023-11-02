@@ -67,6 +67,7 @@ jobs:
     - name: Create necessary directories
       run: |
         mkdir -p "gobase"
+        mkidr bin
         mkdir bin/invoicer
 
     - name: Build, tag, and push image to Amazon ECR
