@@ -17,4 +17,4 @@ jobs:
     - name: Test
       run: 
         go test \
-        github.com/Securing-DevOps/invoicer-chapter2;
+        github.com/Securing-DevOps/invoicer-chapter2
