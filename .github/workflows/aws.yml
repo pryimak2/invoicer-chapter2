@@ -76,7 +76,7 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: |
         go install --ldflags '-extldflags "-static"' \
-        github.com/Securing-DevOps/invoicer-chapter2;
+        github.com/Securing-DevOps/invoicer-chapter2@latest;
         # Build the Docker image
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
     
