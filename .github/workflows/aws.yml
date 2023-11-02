@@ -46,7 +46,7 @@ permissions:
 jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-latest
+    runs-on: circleci/golang:1.10
     environment: production
 
     steps:
