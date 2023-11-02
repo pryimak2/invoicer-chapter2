@@ -66,7 +66,7 @@ jobs:
       
     - name: Create necessary directories
       run: |
-        mkidr bin
+        mkdir bin
         mkdir bin/invoicer
 
     - name: Build, tag, and push image to Amazon ECR
