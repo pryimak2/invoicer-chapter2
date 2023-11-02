@@ -18,5 +18,8 @@ jobs:
       uses: actions/checkout@v3
     - name: Test
       run: 
+        mkdir bin
         go mod init github.com/Securing-DevOps/invoicer-chapter2;
+        go mod tidy
+        go mod vendor
         go test github.com/Securing-DevOps/invoicer-chapter2
