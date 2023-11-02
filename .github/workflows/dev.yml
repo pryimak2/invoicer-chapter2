@@ -16,5 +16,4 @@ jobs:
     steps:
     - name: Test
       run: 
-        go test \
-        github.com/Securing-DevOps/invoicer-chapter2
+        go test github.com/Securing-DevOps/invoicer-chapter2
