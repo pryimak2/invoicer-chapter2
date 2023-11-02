@@ -70,20 +70,26 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        cat >> $BASH_ENV << EOF
-        export GOPATH_HEAD="$(echo ${GOPATH}|cut -d ':' -f 1)"
-        export GOPATH_BASE="$(echo ${GOPATH}|cut -d ':' -f 1)${gb}"
+        # Set the environment variables
+        export GOPATH_HEAD="$(echo ${GOPATH} | cut -d ':' -f 1)"
+        export GOPATH_BASE="${GOPATH_HEAD}${gb}"
         export DOCKER_REPO="$dr"
-        EOF
+    
+        # Create directories
         mkdir -p "${GOPATH_BASE}"
         mkdir -p "${GOPATH_HEAD}/bin"
         mkdir bin
-        cp "$GOPATH_HEAD/bin/${CIRCLE_PROJECT_REPONAME}" bin/invoicer;
+    
+        # Copy the binary to your 'bin' directory
+        cp "$GOPATH_HEAD/bin/${CIRCLE_PROJECT_REPONAME}" bin/invoicer
+    
+        # Build the Docker image
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+    
+        # Push the Docker image to ECR
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    
+        # Echo the image details to an output file (if needed)
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
     - name: Fill in the new image ID in the Amazon ECS task definition
