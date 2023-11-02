@@ -73,6 +73,13 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
+        cat >> $BASH_ENV << EOF
+        export GOPATH_HEAD="$(echo ${GOPATH}|cut -d ':' -f 1)"
+        export GOPATH_BASE="$(echo ${GOPATH}|cut -d ':' -f 1)${gb}"
+        export DOCKER_REPO="$dr"
+        EOF
+        mkdir -p "${GOPATH_BASE}"
+        mkdir -p "${GOPATH_HEAD}/bin"
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
