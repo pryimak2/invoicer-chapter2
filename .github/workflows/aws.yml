@@ -67,8 +67,7 @@ jobs:
     - name: Create necessary directories
       run: |
         mkdir bin
-        mkdir bin/invoicer
-        chmod 777 bin/invoicer
+      
 
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
@@ -76,7 +75,7 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-
+        go build --ldflags '-extldflags "-static"' -o bin/invoicer .
         # Build the Docker image
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
     
