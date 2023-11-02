@@ -63,19 +63,30 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
-
+      
+    - name: Setup environment
+      run: |
+        gb="/src/github.com/${GITHUB_REPOSITORY%/*}";
+        if [ "${GITHUB_REPOSITORY%/*}" == 'Securing-DevOps' ]; then
+          dr="securingdevops"
+        else
+          dr=$DOCKER_USER
+        fi
+        echo "export GOPATH_HEAD=\"$(echo ${GOPATH} | cut -d ':' -f 1)\"" >> $GITHUB_ENV
+        echo "export GOPATH_BASE=\"$(echo ${GOPATH} | cut -d ':' -f 1)${gb}\"" >> $GITHUB_ENV
+        echo "export DOCKER_REPO=\"$dr\"" >> $GITHUB_ENV
+    - name: Create necessary directories
+      run: |
+        mkdir -p "${GOPATH_BASE}"
+        mkdir -p "${GOPATH_HEAD}/bin"
+        
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        # Set the environment variables
-    
-        # Create directories
-        mkdir /bin/invoicer
-  
-    
+
         # Build the Docker image
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
     
