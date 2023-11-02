@@ -1,0 +1,20 @@
+name: Go test
+
+on:
+  push:
+    branches: [ "*" ]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+    - name: Test
+      run: 
+        go test \
+        github.com/Securing-DevOps/invoicer-chapter2;
