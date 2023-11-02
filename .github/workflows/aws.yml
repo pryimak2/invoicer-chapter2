@@ -68,7 +68,7 @@ jobs:
       run: |
         mkdir bin
         mkdir bin/invoicer
-        chmod 777 /bin/invoicer
+        chmod 777 bin/invoicer
 
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
