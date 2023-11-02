@@ -46,7 +46,7 @@ permissions:
 jobs:
   deploy:
     name: Deploy
-    runs-on: circleci/golang:1.10
+    runs-on: bookworm:latest
     environment: production
 
     steps:
