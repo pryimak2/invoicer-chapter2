@@ -92,7 +92,8 @@ jobs:
      #   echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
     - name: Run application in background
       run: |
-            docker run -d $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  
+        docker ps -a
+        docker run -d $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  
 
     - name: ZAP baseline test of application
       run: |
