@@ -67,7 +67,8 @@ jobs:
     - name: Create necessary directories
       run: |
         mkdir bin
-      
+        go get github.com/govend/govend
+
 
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
@@ -84,23 +85,33 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
     
         # Push the Docker image to ECR
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+   #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     
         # Echo the image details to an output file (if needed)
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+     #   echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+    - name: Run application in background
+      run: |
+            docker run -d $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  
 
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
-        container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
+    - name: ZAP baseline test of application
+      run: |
+        docker pull owasp/zap2docker-weekly
+        docker run -t owasp/zap2docker-weekly zap-baseline.py \
+          -u https://raw.githubusercontent.com/Securing-DevOps/invoicer-chapter3/master/zap-baseline.conf \
+          -t http://172.17.0.2:8080/ || exit 1
 
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ${{ env.ECS_SERVICE }}
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
+  #  - name: Fill in the new image ID in the Amazon ECS task definition
+#      id: task-def
+#      uses: aws-actions/amazon-ecs-render-task-definition@v1
+ #     with:
+ #       task-definition: ${{ env.ECS_TASK_DEFINITION }}
+ #       container-name: ${{ env.CONTAINER_NAME }}
+ #       image: ${{ steps.build-image.outputs.image }}
+
+  #  - name: Deploy Amazon ECS task definition
+ #     uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+  #    with:
+  #      task-definition: ${{ steps.task-def.outputs.task-definition }}
+  #      service: ${{ env.ECS_SERVICE }}
+  #      cluster: ${{ env.ECS_CLUSTER }}
+  #      wait-for-service-stability: true
