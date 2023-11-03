@@ -97,7 +97,7 @@ jobs:
         docker pull owasp/zap2docker-weekly
         docker run -t owasp/zap2docker-weekly zap-baseline.py \
           -u https://raw.githubusercontent.com/Securing-DevOps/invoicer-chapter3/master/zap-baseline.conf \
-          -t http://172.17.0.2:8080/ || exit 1
+          -t http://127.0.0.1:8080/ || exit 1
 
   #  - name: Fill in the new image ID in the Amazon ECS task definition
 #      id: task-def
