@@ -67,7 +67,6 @@ jobs:
     - name: Create necessary directories
       run: |
         mkdir bin
-        go get github.com/govend/govend
 
 
     - name: Build, tag, and push image to Amazon ECR
@@ -80,7 +79,9 @@ jobs:
         go mod tidy
         go mod vendor
         
+        
         go build --ldflags '-extldflags "-static"' -o bin/invoicer .
+        go get github.com/govend/govend
         # Build the Docker image
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
     
